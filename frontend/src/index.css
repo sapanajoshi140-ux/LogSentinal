@@ -1,0 +1,124 @@
+@import "tailwindcss";
+
+/* ── Base ── */
+body {
+  font-family: sans-serif;
+  background: rgb(26, 26, 26);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   PDF TEXT LAYER
+   The canvas renders visible glyphs. The text layer is a ghost:
+   fully transparent unless the user is actively selecting text.
+   Nothing in .pdf-text-layer should ever be visible except the
+   ::selection highlight.
+   ═══════════════════════════════════════════════════════════════════ */
+.pdf-text-layer {
+  /* Relative position is set inline; these just guard against accidents */
+  pointer-events: auto;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+/* Every span inside the text layer is a ghost */
+.pdf-text-layer span {
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  background: transparent !important;
+  text-shadow: none !important;
+  text-decoration: none !important;
+  outline: none !important;
+}
+
+/* The ONE thing the text layer IS allowed to show: the selection highlight */
+.pdf-text-layer span::selection {
+  /* colour comes from the theme variable */
+  background: var(--selection-bg) !important;
+  /* keep text invisible even while selected — the canvas glyphs show through */
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+/* Prevent canvas pixels from being drag-selected */
+canvas {
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: none;
+}
+
+/* ── Animations ── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateX(-50%) translateY(6px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* ═══════════════════════════════════════════════
+   THEME VARIABLES
+   ═══════════════════════════════════════════════ */
+:root,
+html[data-theme="light"] {
+  --page-bg:          #ffffff;
+  --page-text:        #1a1a1a;
+  --page-border:      #e5e7eb;
+  --app-bg:           #F0F2F5;
+  --chat-bg:          #f9fafb;
+  --bubble-user-bg:   #3b82f6;
+  --bubble-user-text: #ffffff;
+  --bubble-ai-bg:     #ffffff;
+  --bubble-ai-text:   #1f2937;
+  --bubble-ai-border: #e5e7eb;
+  --selection-bg:     rgba(59, 130, 246, 0.35);
+  --note-border:      #e5e7eb;
+  --sidebar-bg:       #ffffff;
+  --sidebar-border:   #e5e7eb;
+  --muted-text:       #6b7280;
+}
+
+html[data-theme="dark"] {
+  --page-bg:          #1e1e1e;
+  --page-text:        #d4d4d4;
+  --page-border:      #2e2e2e;
+  --app-bg:           #141414;
+  --chat-bg:          #1a1a1a;
+  --bubble-user-bg:   #2563eb;
+  --bubble-user-text: #ffffff;
+  --bubble-ai-bg:     #242424;
+  --bubble-ai-text:   #d4d4d4;
+  --bubble-ai-border: #2e2e2e;
+  --selection-bg:     rgba(96, 165, 250, 0.3);
+  --note-border:      #2e2e2e;
+  --sidebar-bg:       #1a1a1a;
+  --sidebar-border:   #2e2e2e;
+  --muted-text:       #9ca3af;
+}
+
+html[data-theme="reading"] {
+  --page-bg:          #f8f4ee;
+  --page-text:        #4a3f2f;
+  --page-border:      #ede5d8;
+  --app-bg:           #fbf8f4;
+  --chat-bg:          #f9f6f1;
+  --bubble-user-bg:   #ddd3c0;
+  --bubble-user-text: #4a3f2f;
+  --bubble-ai-bg:     #fbf8f4;
+  --bubble-ai-text:   #4a3f2f;
+  --bubble-ai-border: #ede5d8;
+  --selection-bg:     rgba(200, 178, 130, 0.28);
+  --note-border:      #ede5d8;
+  --sidebar-bg:       #f8f4ee;
+  --sidebar-border:   #ede5d8;
+  --muted-text:       #9a8470;
+}
+
+/* Global selection for non-PDF content */
+html[data-theme="light"]   ::selection { background: rgba(59, 130, 246, 0.2);  color: var(--page-text); }
+html[data-theme="dark"]    ::selection { background: rgba(99, 102, 241, 0.35); color: var(--page-text); }
+html[data-theme="reading"] ::selection { background: var(--selection-bg);      color: var(--page-text); }
+
+/* PDF text layer overrides the global rule above — keep text invisible */
+html[data-theme="light"]   .pdf-text-layer span::selection,
+html[data-theme="dark"]    .pdf-text-layer span::selection,
+html[data-theme="reading"] .pdf-text-layer span::selection {
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+}
