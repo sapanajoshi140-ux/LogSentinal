@@ -1,0 +1,10 @@
+# .github/workflows/ci.yml
+name: CI
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -f docker/Dockerfile.backend -t auth-api ./backend/Login_signup
+      - run: docker build -f docker/Dockerfile.backend -t detection-api ./backend/detection

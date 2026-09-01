@@ -1,0 +1,27 @@
+services:
+  auth-api:
+    build:
+      context: ./backend/Login_signup
+      dockerfile: ../../docker/Dockerfile.backend
+    ports:
+      - "8000:8000"
+
+  detection-api:
+    build:
+      context: ./backend/detection
+      dockerfile: ../../docker/Dockerfile.backend
+    ports:
+      - "8001:8000"
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "5173:5173"
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    volumes:
+      - ./otel/otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml
+      - ./sample-logs:/var/log/app
+    command: ["--config=/etc/otelcol-contrib/config.yaml"]
