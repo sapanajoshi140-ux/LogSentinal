@@ -14,10 +14,10 @@ services:
       - "8001:8000"
 
   frontend:
-  build:
+    build:
     context: ./frontend
     dockerfile: ../docker/Dockerfile.frontend
-  ports:
+    ports:
     - "5173:80"
 
   otel-collector:
