@@ -1,0 +1,33 @@
+@import "tailwindcss";
+.navbar {
+  @apply sticky top-0 z-50; 
+  
+  @apply flex justify-between items-center py-2 px-6 text-black;
+}
+.nav-links {
+  @apply flex list-none gap-5 m-0 p-0;
+}
+.nav-link-item {
+  @apply text-black no-underline font-bold transition-all duration-300;
+  @apply hover:text-black;
+ 
+}
+/* Pill Container */
+.auth-pill-container {
+  @apply flex gap-1.5;
+}
+
+/* Shared Button Styles */
+.pill-btn {
+  @apply px-6 py-2.5 rounded-full border-none cursor-pointer font-semibold shadow-md;
+  @apply bg-gray-800 text-white transition-all duration-300;
+  @apply hover:text-white hover:scale-105 shadow-xl active:scale-95;
+}
+.react-pdf__Page__textContent {
+  user-select: text;
+  cursor: text;
+}
+
+.react-pdf__Page {
+  position: relative;
+}
